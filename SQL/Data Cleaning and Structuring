@@ -1,0 +1,49 @@
+-- CASE Example
+SELECT customer_id,SUM(amount) AS sum_amount,
+       CASE WHEN SUM(amount) BETWEEN 0 AND 75 THEN 'Bronze'
+	        WHEN SUM(amount) BETWEEN 75 AND 150 THEN 'Silver'
+	   ELSE 'Gold'
+	 END AS customer_category
+FROM payment
+GROUP BY 1
+ORDER BY 2;
+
+-- Inventory of each film. Categorize each film as 'High' inventory>=5 else low.
+SELECT film_id,COUNT(inventory_id),
+       CASE WHEN COUNT(inventory_id)>=5 THEN 'High' ELSE 'Low'
+	   END AS inventory_status
+FROM inventory
+GROUP BY 1;
+
+-- Count the number of rentals for each film and categorize each film based on the 
+-- number of rentals Low(<10),Medium(10-20),High(>20)
+SELECT f.film_id,COUNT(rental_id),
+       CASE WHEN COUNT(rental_id)<10 THEN 'Low'
+	        WHEN COUNT(rental_id) BETWEEN 10 AND 20 THEN 'Medium'
+			ELSE 'High'
+		END AS film_demand
+FROM film f
+JOIN inventory i
+ON f.film_id = i.film_id
+JOIN rental r
+ON i.inventory_id= r.inventory_id
+GROUP BY f.film_id;
+
+-- Left,Right,Length
+SELECT * , CASE WHEN LENGTH(phone)=11 THEN LEFT(phone,1)
+                WHEN LENGTH(phone)=12 THEN LEFT(phone,2)
+				ELSE 'Null'
+            END AS country_code
+FROM address;
+
+
+-- Customers whose name start with vowels
+SELECT SUM(fn_vowel)
+FROM (SELECT customer_id,
+       CASE WHEN LEFT(first_name,1) IN ('A','E','I','O','U') THEN 1 ELSE 0
+	   END AS fn_vowel
+	   FROM customer) sub1;
+	   
+-- Concatenation
+SELECT CONCAT(first_name,' ',last_name) AS full_name
+FROM customer;

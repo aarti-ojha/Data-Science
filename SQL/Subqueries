@@ -1,1 +1,70 @@
+-- latest rental month
+SELECT DATE_TRUNC('month', MAX(rental_date)) AS latest_month
+FROM rental;
 
+-- company's total revenue
+SELECT SUM(amount)
+FROM payment p
+JOIN rental r
+ON p.rental_id = r.rental_id
+WHERE DATE_TRUNC('month',rental_date)=
+      (SELECT DATE_TRUNC('month', MAX(rental_date)) AS latest_month
+       FROM rental);
+	   
+-- Subquery question
+-- Average rental rate
+SELECT ROUND(AVG(rental_rate),2)
+FROM film;
+-- Films that have rental rate greater than the average rental rate
+SELECT film_id,title,rental_rate
+FROM film
+WHERE rental_rate > (SELECT ROUND(AVG(rental_rate),2) FROM film);
+
+
+-- FROM Clause subquery
+
+-- customers having at least 36 rentals
+SELECT customer_id,COUNT(rental_id)
+FROM rental
+GROUP BY 1
+HAVING COUNT(rental_date)>=36
+ORDER BY 1;
+
+-- How many customers made at least 36 rental transactions
+-- How much revenue have they brought to the company
+SELECT COUNT(p.customer_id),SUM (amount)
+FROM (SELECT customer_id,COUNT(rental_id)
+		FROM rental
+		GROUP BY 1
+		HAVING COUNT(rental_date)>=36
+		ORDER BY 1) sub1
+JOIN payment p
+ON sub1.customer_id = p.customer_id
+ORDER BY 2;
+
+
+-- Customers who paid an average amount of 4$ or more to company
+SELECT customer_id, ROUND(AVG(amount),2) AS mean_payment
+FROM payment
+GROUP BY 1
+HAVING ROUND(AVG(amount),2)>=4;
+
+-- List of unique films rented by Customers who paid an average amount of 4$ or more to company
+SELECT DISTINCT f.film_id,title
+FROM (SELECT customer_id, ROUND(AVG(amount),2) AS mean_payment
+		FROM payment 
+		GROUP BY 1
+		HAVING ROUND(AVG(amount),2)>=4) sub1
+JOIN rental r
+ON sub1.customer_id = r.customer_id
+JOIN inventory i
+ON r.inventory_id = i.inventory_id
+JOIN film f
+ON i.film_id = f.film_id;
+
+
+-- SELECT store ID and customer count per store. Add a third column showing the total amount of revenue 
+-- for the whole company
+SELECT store_id,COUNT(customer_id),(SELECT SUM(amount) FROM payment)
+FROM customer
+GROUP BY 1;

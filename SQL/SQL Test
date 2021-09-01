@@ -1,0 +1,103 @@
+CREATE TABLE students (id int, studentname varchar(30), teacherid int);
+INSERT INTO students (id, studentname, teacherid) 
+       values (1001, 'Jane Schmidt', 1),
+                  (1002, 'Kristin Jones', NULL),
+                  (1003, 'Angelina Perotti', 3);
+SELECT * FROM students;
+
+CREATE TABLE teachers (id int, name varchar(30));	
+INSERT INTO teachers (id, name) 
+       values (1, 'Sandra Cook'),
+                  (2, 'Timothy James'),
+                  (3, 'Georgina Valdez');
+SELECT * FROM teachers;
+
+-- Write a query that retrieves all the students taught by either Timothy or Georgia
+SELECT studentname
+FROM students s
+JOIN teachers t
+ON s.teacherid = t.id
+WHERE name IN ('Timothy James','Georgina Valdez');
+
+-- Write a query to retrieve all the students taught with no or missing teacher
+SELECT studentname
+FROM students s
+JOIN teachers t
+ON s.teacherid = t.id
+WHERE teacherid IS NULL;
+
+-- Create another table
+CREATE TABLE heights (name varchar(30), gender varchar(15), height int);
+INSERT INTO heights (name, gender, height) 
+       values ('Anna', 'female', 157),
+                  ('Ben', 'male', 190),
+                  ('Catherine', 'female', 175),
+                  ('Dion', 'male', 177),
+                  ('Eva', 'female', 167),
+                  ('Frank', 'male', 182);
+SELECT * FROM heights;
+-- Write a query to find avg height of people over 160cm tall by gender. 
+-- Round the average height upto 2 decimal places
+
+SELECT gender,ROUND(AVG(height),2)
+FROM heights
+WHERE height>160
+GROUP BY gender;
+
+-- Write a query showing Max and min height of people belonging to a particular gender.
+-- Only show the cases where the min height is at least 160cm
+SELECT gender, MIN(height) AS minimum_height, MAX(height) AS maximum_height
+FROM heights
+GROUP BY gender
+HAVING MIN(height)>160;
+
+-- Create another table
+CREATE TABLE employee (id int, name varchar(30), department varchar(30));
+INSERT INTO employee (id, name, department) 
+       values (1, 'James', 'Marketing'),
+                  (2, 'John', 'Marketing'),
+                  (3, 'Michael', 'IT'),
+	       (4, 'Kathy', 'IT'),
+	       (5, 'John', 'IT'),
+	       (6, 'Sara', 'Marketing');
+SELECT * FROM employee;
+-- Write a query to find duplicate names
+
+SELECT name FROM employee
+GROUP BY name
+HAVING COUNT(name)>1;
+
+-- Create table
+CREATE TABLE salary (id int, salary int);
+INSERT INTO salary (id, salary)
+       VALUES (1, 70000),
+	           (2, 80000),
+	           (3, 90000),
+				(4, 97000),
+               (5, 105000),
+	           (6, 90000);
+SELECT * FROM salary;
+
+-- Maximum salary of a department
+SELECT department, MAX(salary)
+FROM employee e
+JOIN salary s
+ON e.id = s.id
+GROUP BY 1;
+
+-- Employee with Max salary
+SELECT salary,department,name
+FROM employee 
+JOIN salary
+ON employee.id = salary.id
+WHERE (salary,department) IN (
+	                         SELECT department, MAX(salary)
+							 FROM employee e
+							 JOIN salary s
+							 ON e.id = s.id
+							 GROUP BY department);
+
+
+
+
+

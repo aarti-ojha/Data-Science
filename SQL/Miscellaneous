@@ -1,0 +1,35 @@
+-- Create a sample table
+CREATE TABLE beer_info(
+             beer_id INT,
+			 beer_name VARCHAR(50),
+			 manufacturer VARCHAR(50),
+	         price INT);
+			 
+SELECT * FROM beer_info;
+INSERT INTO beer_info(
+VALUES(1001,'Guinness','Diageo',14),
+	   (1002,'Bigfoot','Sierra Nevada Brewing Co',6),
+	   (1003,'Forbidden Planet','Bluejacket',24),
+	   (1004,Null,'Brewing Ommegang',8),
+	    (1005,'Milkbeer',Null,8)
+	);
+	
+-- Create another table named Beer_Drinkers
+CREATE TABLE beer_drinkers(
+             drinker_id INT,
+		     got_name VARCHAR(50),
+			 age INT,
+			 birthdate DATE,
+			 beer_name VARCHAR(50),
+			 beer_id INT
+	);
+SELECT * FROM beer_drinkers;
+INSERT INTO beer_drinkers(
+		VALUES(324,'Tyrion Lannister',49,'1969-06-11','Guiness',1001),
+			  (439,'Samwell Tarly',30,'1988-09-15','Bigfoot',1002),
+			  (698,'Jaimme Lannister',50,'1968-12-17','Forbidden planet',1003),
+			  (730,'Jon Snow',32,'1986-07-08',Null,1004),
+			  (850,'Tommand Giantsbane',46,'1972-11-28','Milkbeer',1005)
+	);
+	    
+

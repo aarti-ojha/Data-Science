@@ -1,0 +1,15 @@
+When we create relationships between the combined tables that logically make sense is called Data Model.
+
+DAX: library of functions and operators that can be combined to build formulas and expressions in Power BI desktop
+These functions are designed to work with relational data models
+
+DAX allows you to add new columns and measures to enrich your data sources and open up the potential for new insights.
+
+Two ways to use DAX:
+1. Calculated columns-Create new fields based on DAX formula calculation
+   a> Understand "Row Context"
+   b> Typically used to create new filters
+2. Calculated Measure-Create new values based on DAX formula
+   a>Understand Filter context
+   b>Used to enrich analysis and data visualisations
+

@@ -1,0 +1,3 @@
+This case study depends upon mapping out all kinds of data sources that we have.
+We will be combining all the data sources that we have and deriving some actionable derivations from that.
+
